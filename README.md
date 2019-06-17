@@ -1,4 +1,4 @@
-# video-react
+# h5-video-react
 使用react+ts实现的一个视频播放器组件
 
 ## 目录结构
@@ -25,3 +25,5 @@ h5-video-react
 │   tslint.json
 │   webpack.config.js
 ```
+
+[在线演示](https://sun111sunshine.github.io/h5-video-react/)
