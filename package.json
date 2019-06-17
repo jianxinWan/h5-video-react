@@ -1,14 +1,15 @@
 {
-  "name": "video-react",
-  "version": "1.0.0",
-  "description": "a video component about video",
-  "main": "dist/index.js",
+  "name": "h5-video-react",
+  "version": "0.0.4",
+  "description": "test publish",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --mode development --open",
-    "transpile": "babel src -d dist --copy-files",
-    "prepublishOnly": "npm run transpile",
-    "build": "webpack --mode production",
+    "dev": "npm run start",
+    "start": "webpack-dev-server --mode development --open --colors",
+    "compile": "babel src -d dist --copy-files",
+    "prepublishOnly": "npm run compile",
+    "build": "webpack --mode production --colors",
     "deploy": "gh-pages -d examples/dist",
     "publish-demo": "npm run build && npm run deploy"
   },
@@ -37,6 +38,8 @@
     "react-dom": "^16.8.6"
   },
   "devDependencies": {
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.7.0",
@@ -44,7 +47,15 @@
     "css-loader": "^2.1.1",
     "gh-pages": "^2.0.1",
     "html-webpack-plugin": "^3.2.0",
+    "latest": "^0.2.0",
+    "less": "^3.9.0",
+    "less-loader": "^5.0.0",
     "style-loader": "^0.23.1",
+    "styled-jsx": "^3.2.1",
+    "ts-loader": "^6.0.2",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^4.0.0",
+    "typescript": "^3.5.1",
     "webpack": "^4.33.0",
     "webpack-cli": "^3.3.3",
     "webpack-dev-server": "^3.7.1"

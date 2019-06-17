@@ -5,7 +5,7 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
   filename: "./index.html"
 });
 module.exports = {
-  entry: path.join(__dirname, "examples/src/index.jsx"),
+  entry: path.join(__dirname, "examples/src/index.tsx"),
   output: {
     path: path.join(__dirname, "examples/dist"),
     filename: "bundle.js"
@@ -18,13 +18,31 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        use: ["style-loader", "css-loader", "less-loader"]
+      },
+      {
+        test: /\.less$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1
+            }
+          },
+          'less-loader'
+        ]
+      },
+      {
+        test: /\.(ts|tsx)?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
       }
     ]
   },
   plugins: [htmlWebpackPlugin],
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: [".js", ".jsx", ".ts", ".tsx"]
   },
   devServer: {
     port: 8848

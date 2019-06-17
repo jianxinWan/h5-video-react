@@ -1,5 +1,10 @@
 src
 examples
+node_modules
+config
 .babelrc
 .gitignore
 webpack.config.js
+tsconfig.json
+tslint.json
+.prettierrc
