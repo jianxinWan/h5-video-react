@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from './store'
+
 import Bar from './components/bar'
+import Time from './components/time'
 
 export default function Controls() {
   const { state, dispatch } = useContext(GlobalStoreContext)
@@ -13,15 +15,15 @@ export default function Controls() {
         <i
           onClick={() => dispatch({
             type: 'playStatus',
-            payload: {
-              isPlay: !isPlay
-            }
+            payload: !isPlay
           })}
           className={[
             'iconfont',
             'play-btn',
             isPlay ? 'icon-pause' : 'icon-play'].join(' ')
-          }></i>
+          }>
+        </i>
+        <Time />
       </div>
       <style>
         {`

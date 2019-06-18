@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Fragment } from 'react'
 import { render } from 'react-dom';
 import Video from '../../src';
 interface IvideoConfig {
@@ -14,10 +15,13 @@ const videoConfig: IvideoConfig = {
 const App = () => {
   const { src, autoPlay, poster } = videoConfig
   return (
-    <Video
-      src={src}
-      autoPlay={autoPlay}
-      poster={poster} />
+    <Fragment>
+      <Video
+        src={src}
+        autoPlay={autoPlay}
+        poster={poster}
+      />
+    </Fragment>
   )
 };
 render(<App />, document.getElementById("root"));
