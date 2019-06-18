@@ -1,26 +1,28 @@
 import * as React from 'react';
-import './index.less'
+import { useEffect, useContext, useState } from 'react'
+import { GlobalStoreProvider, GlobalStoreContext } from './store'
 
-import Controls from './controls'
 
+import Controls from './controls';
+import Player from './player'
+import './index.less';
 interface Iinfo {
   src?: string
   autoPlay?: boolean,
   poster?: string
 }
 
-
 const Video = (info: Iinfo) => {
   const { src, autoPlay, poster } = info
+  const { state } = useContext(GlobalStoreContext)
   return (
-    <div className="video-wrapper">
-      {poster && <div className="video-poster" />}
-      <video controls autoPlay={autoPlay}>
-        <source src={src} type="video/mp4" />
-      </video>
-      <Controls />
-      <style>
-        {`
+    <GlobalStoreProvider>
+      <div className="video-wrapper">
+        {poster && <div className="video-poster" />}
+        <Player src={src} autoPlay={autoPlay} />
+        <Controls />
+        <style>
+          {`
           .video-poster{
             position: absolute;
             top: 0;
@@ -32,8 +34,11 @@ const Video = (info: Iinfo) => {
             background-repeat: no-repeat;
           }
         `}
-      </style>
-    </div>
+        </style>
+      </div>
+    </GlobalStoreProvider>
   )
 };
+
+
 export default Video;

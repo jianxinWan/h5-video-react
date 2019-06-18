@@ -9,7 +9,7 @@
     "lib": ["es5", "es6", "dom"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "target": "es6",
     "sourceMap": true,
     "jsx": "react",
     "strictFunctionTypes": true,
