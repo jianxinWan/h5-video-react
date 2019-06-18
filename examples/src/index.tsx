@@ -10,7 +10,7 @@ interface IvideoConfig {
 const videoConfig: IvideoConfig = {
   src: 'http://h5player.bytedance.com/video/mp4/xgplayer-demo-360p.mp4',
   autoPlay: false,
-  poster: '', //s2.pstatp.com/cdn/expire-1-M/byted-player-videos/1.0.0/poster.jpg
+  poster: '//s2.pstatp.com/cdn/expire-1-M/byted-player-videos/1.0.0/poster.jpg', //
 }
 const App = () => {
   const { src, autoPlay, poster } = videoConfig

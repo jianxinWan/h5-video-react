@@ -28,6 +28,9 @@ export default function Controls() {
       <style>
         {`
           .controls-wrapper{
+            position: absolute;
+            bottom: 5px;
+            left: 0;
             width: 100%;
             height: 40px;
             background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.37),rgba(0,0,0,.57),rgba(0,0,0,.75));
@@ -48,6 +51,9 @@ export default function Controls() {
           }
           .play-btn{
             color: #ffffff;
+          }
+          .icon-pause{
+            font-size: 20px;
           }
         `}
 

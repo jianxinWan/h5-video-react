@@ -11,7 +11,7 @@ export default function Player(info: Iinfo) {
   const { src, autoPlay } = info
   const videoEl = useRef<HTMLVideoElement>(null)
   const { state, dispatch } = useContext(GlobalStoreContext)
-  const { isPlay } = state
+  const { isPlay, currentTime, drag } = state
   useEffect(() => {
     const video = videoEl.current
     if (video !== null) {
@@ -23,10 +23,18 @@ export default function Player(info: Iinfo) {
       }
     }
   }, [isPlay])
+  // 不使用currentTime的原因是正常播放会触发currentTime
+  useEffect(() => {
+    const video = videoEl.current
+    if (video !== null) {
+      if (currentTime) {
+        video.currentTime = currentTime
+      }
+    }
+  }, [drag])
   return (
     <Fragment>
       <video
-        controls
         autoPlay={autoPlay}
         ref={videoEl}
         onCanPlay={(e) => dispatch({ type: 'duration', payload: e.currentTarget.duration })}
