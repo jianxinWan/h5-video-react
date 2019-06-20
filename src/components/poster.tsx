@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useContext, useEffect } from 'react'
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../store/index'
 
 interface IInfo {
   poster: string

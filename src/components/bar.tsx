@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useContext, useRef } from 'react'
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../store/index'
 
 interface IParams {
   type: string,
@@ -42,7 +42,7 @@ export default function Bar() {
       onTouchStart={() => dispatch({ type: 'showControls', payload: true })}
     >
       <div className="progress-bar-in" />
-      <style>
+      <style jsx>
         {`
           .progress-bar-out{
             width: 100%;

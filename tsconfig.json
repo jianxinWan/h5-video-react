@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
-    "outDir": "./examples/dist",
-    "target": "es6",
-    "jsx": "react",
+    "target": "esnext",
+    "module": "esnext",
+    "baseUrl": ".",
+    "typeRoots": ["./src/typings"],
+    "allowJs": true,
+    "jsx": "preserve",
     "sourceMap": true,
-    "module": "commonjs"
   },
   "include": [
     "src",

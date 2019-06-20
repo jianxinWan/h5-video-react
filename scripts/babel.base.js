@@ -34,6 +34,7 @@ const plugins = [
       // plugins: ['styled-jsx-plugin-less'],
       optimizeForSpeed: true,
       sourceMaps: true,
+      vendorPrefixes: true,
     },
   ],
 ]

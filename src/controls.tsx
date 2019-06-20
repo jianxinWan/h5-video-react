@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import { GlobalStoreContext } from './store'
+import { GlobalStoreContext } from './store/index'
 
 import Bar from './components/bar'
 import Time from './components/time'
@@ -57,7 +57,7 @@ export default function Controls() {
         </i>
         <Time />
       </div>
-      <style>
+      <style jsx>
         {`
           .controls-wrapper{
             position: absolute;

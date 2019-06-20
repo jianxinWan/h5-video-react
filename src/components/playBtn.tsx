@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useContext } from 'react'
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../store/index'
 
 interface IParams {
   type: string,
@@ -27,7 +27,7 @@ export default function PlayBtn() {
   return (
     <div className="play-btn-wrapper" onClick={() => startPlay(dispatch)}>
       <i className="iconfont icon-play center-logo"></i>
-      <style>
+      <style jsx>
         {`
           .play-btn-wrapper{
             width: 70px;

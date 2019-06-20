@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useContext } from 'react'
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../store/index'
 
 const timeTransform = (time: number) => {
   time = parseInt(time + '', 10)
@@ -23,7 +23,7 @@ export default function Time() {
       {currentTime && timeTransform(currentTime) || '0:00'}
       <span>/</span>
       {duration && timeTransform(duration) || '0:00'}
-      <style>
+      <style jsx>
         {`
           .time-wrapper{
             color: #ffffff;

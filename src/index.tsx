@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { GlobalStoreProvider } from './store'
-
+import { GlobalStoreProvider } from './store/index'
 
 import Controls from './controls';
 import Player from './player';
@@ -15,7 +14,6 @@ interface IInfo {
 
 const Video = (info: IInfo) => {
   const { src, autoPlay, poster } = info
-  console.log('index')
   return (
     <GlobalStoreProvider>
       <div className="video-wrapper">

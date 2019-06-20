@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm run start",
-    "start": "webpack-dev-server  --config ./scripts/webpack.config.js --mode development --open --colors",
+    "start": "webpack-dev-server  --config ./scripts/webpack.config.js --mode development --colors",
     "compile": "babel src -d dist --copy-files",
     "prepublishOnly": "npm run compile",
     "build": "webpack  --config ./scripts/webpack.config.js --mode production --colors",
@@ -50,6 +50,7 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
+    "@babel/runtime": "^7.4.5",
     "awesome-typescript-loader": "^5.2.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.6",
