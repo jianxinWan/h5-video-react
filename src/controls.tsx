@@ -1,22 +1,54 @@
 import * as React from 'react'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { GlobalStoreContext } from './store'
 
 import Bar from './components/bar'
 import Time from './components/time'
+interface IParams {
+  type: string,
+  payload: boolean
+}
+
+type IDispatch = (params: IParams) => void
+
+const playBtnClick = (isPlay: boolean | undefined, dispatch: IDispatch) => {
+  if (isPlay !== undefined) {
+    dispatch({
+      type: 'playStatus',
+      payload: !isPlay
+    })
+    dispatch({
+      type: 'showPoster',
+      payload: false
+    })
+  }
+}
+let showControlsFlag = true
 
 export default function Controls() {
   const { state, dispatch } = useContext(GlobalStoreContext)
-  const { isPlay } = state
+  const { isPlay, showControls } = state
+  useEffect(() => {
+    console.log(showControls)
+    if (showControlsFlag) {
+      if (isPlay) {
+        showControlsFlag = false
+        setTimeout(() => {
+          showControlsFlag = true
+          dispatch({
+            type: 'showControls',
+            payload: false
+          })
+        }, 2500)
+      }
+    }
+  }, [showControls, isPlay])
   return (
     <div className="controls-wrapper">
       <Bar />
       <div className="bottom-wrapper">
         <i
-          onClick={() => dispatch({
-            type: 'playStatus',
-            payload: !isPlay
-          })}
+          onClick={() => playBtnClick(isPlay, dispatch)}
           className={[
             'iconfont',
             'play-btn',
@@ -29,11 +61,13 @@ export default function Controls() {
         {`
           .controls-wrapper{
             position: absolute;
-            bottom: 5px;
+            bottom: -45px;
             left: 0;
+            opacity: ${showControls || !isPlay ? '1' : '0'};
             width: 100%;
             height: 40px;
             background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.37),rgba(0,0,0,.57),rgba(0,0,0,.75));
+            transition: all .5s linear;
           }
           .bottom-wrapper{
             display: flex;

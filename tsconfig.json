@@ -1,20 +1,10 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
-    "module": "commonjs",
-    "declaration": true,
-    "noImplicitAny": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "lib": ["es5", "es6", "dom"],
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "outDir": "./examples/dist",
     "target": "es6",
-    "sourceMap": true,
     "jsx": "react",
-    "strictFunctionTypes": true,
-    "alwaysStrict": true,
-    "strict": true
+    "sourceMap": true,
+    "module": "commonjs"
   },
   "include": [
     "src",

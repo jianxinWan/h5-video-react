@@ -10,7 +10,7 @@ interface IParams {
 type IDispatch = (params: IParams) => void
 
 const dragBar = (e: React.MouseEvent, out: HTMLDivElement | null, drag: boolean | undefined, duration: number, dispatch: IDispatch) => {
-  const event = e || window.event;
+  const event: any = e || window.event;
   const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
   const x = event.pageX || event.clientX + scrollX;
   if (out !== null) {
@@ -39,9 +39,9 @@ export default function Bar() {
   return (
     <div className="progress-bar-out" ref={out}
       onClick={(e) => dragBar(e, out.current, drag, duration, dispatch)}
+      onTouchStart={() => dispatch({ type: 'showControls', payload: true })}
     >
-      {<div className="progress-bar-in"
-      />}
+      <div className="progress-bar-in" />
       <style>
         {`
           .progress-bar-out{
@@ -50,7 +50,7 @@ export default function Bar() {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-item: center;
+            align-item: flex-start;
           }
           .progress-bar-in{
             width: ${currentTime && duration && currentTime * 100 / duration || 0}%;

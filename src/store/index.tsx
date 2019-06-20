@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { createContext, useReducer } from 'react'
 
-type IAction = ISetPlay | ISetDuration | ISetCurrentTime | ISetDrag
+type IAction = ISetPlay | ISetDuration | ISetCurrentTime | ISetDrag | ISetShowControls
 
 interface ISetPlay {
   type: string
@@ -25,12 +25,18 @@ interface ISetShowPoster {
   type: string
   payload: IStore['showPoster']
 }
+
+interface ISetShowControls {
+  type: string
+  payload: IStore['showControls']
+}
 interface IStore {
   isPlay: boolean
   duration: number
   currentTime: number,
   drag: boolean,
-  showPoster: boolean
+  showPoster: boolean,
+  showControls: boolean
 }
 
 interface StoreContext {
@@ -40,6 +46,7 @@ interface StoreContext {
   dispatch(param: ISetCurrentTime): void
   dispatch(param: ISetDrag): void
   dispatch(param: ISetShowPoster): void
+  dispatch(param: ISetShowControls): void
 }
 
 export function playerReducer(draft: IStore, action: IAction): any {
@@ -63,6 +70,9 @@ export function playerReducer(draft: IStore, action: IAction): any {
     case 'showPoster': {
       return { ...draft, showPoster: payload }
     }
+    case 'showControls': {
+      return { ...draft, showControls: payload }
+    }
     default:
       return;
   }
@@ -73,7 +83,8 @@ const initialState: IStore = {
   duration: 0,
   currentTime: 0,
   drag: false,
-  showPoster: true
+  showPoster: true,
+  showControls: true
 }
 
 export const GlobalStoreContext = createContext<StoreContext>({

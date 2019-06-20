@@ -7,6 +7,27 @@ interface Iinfo {
   autoPlay?: boolean
 }
 
+interface IParams {
+  type: string
+  payload: boolean
+}
+
+type IDispatch = (params: IParams) => void
+
+let flag: boolean = true //函数节流
+const mouseMoveShowControl = (dispatch: IDispatch) => {
+  if (flag) {
+    flag = false
+    setTimeout(() => {
+      flag = true
+      dispatch({
+        type: 'showControls',
+        payload: true
+      })
+    }, 1000)
+  }
+}
+
 export default function Player(info: Iinfo) {
   const { src, autoPlay } = info
   const videoEl = useRef<HTMLVideoElement>(null)
@@ -37,6 +58,10 @@ export default function Player(info: Iinfo) {
       <video
         autoPlay={autoPlay}
         ref={videoEl}
+        muted
+        onMouseEnter={() => dispatch({ type: 'showControls', payload: true })}
+        onMouseMove={() => mouseMoveShowControl(dispatch)}
+        onTouchStart={() => dispatch({ type: 'showControls', payload: true })}
         onCanPlay={(e) => dispatch({ type: 'duration', payload: e.currentTarget.duration })}
         onPause={() => dispatch({ type: 'playStatus', payload: false })}
         onPlay={() => dispatch({ type: 'playStatus', payload: true })}
@@ -45,10 +70,6 @@ export default function Player(info: Iinfo) {
       >
         <source src={src} type="video/mp4" />
       </video>
-      <style>
-        {`
-        `}
-      </style>
     </Fragment>
   )
 }

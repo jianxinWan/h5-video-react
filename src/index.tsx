@@ -15,6 +15,7 @@ interface IInfo {
 
 const Video = (info: IInfo) => {
   const { src, autoPlay, poster } = info
+  console.log('index')
   return (
     <GlobalStoreProvider>
       <div className="video-wrapper">
@@ -22,7 +23,7 @@ const Video = (info: IInfo) => {
         <Player src={src} autoPlay={autoPlay} />
         <PlayBtn />
         <Controls />
-        <style>
+        <style jsx>
           {`
           .video-wrapper{
             position: relative;

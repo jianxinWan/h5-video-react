@@ -13,7 +13,7 @@ export default function Poster(info: IInfo) {
   if (!showPoster) return null
   return (
     <div className="video-poster">
-      <style>
+      <style jsx>
         {`
           .video-poster{
             position: absolute;
