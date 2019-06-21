@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { useContext, useEffect, Fragment, useRef } from 'react'
 import { GlobalStoreContext } from './store/index'
-
 interface Iinfo {
   src?: string
   autoPlay?: boolean

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from './store/index'
 
 import Bar from './components/bar'
@@ -44,7 +44,7 @@ export default function Controls() {
     }
   }, [showControls, isPlay])
   return (
-    <div className="controls-wrapper">
+    <div className="controls-wrapper" onMouseMove={() => { }}>
       <Bar />
       <div className="bottom-wrapper">
         <i
@@ -61,11 +61,11 @@ export default function Controls() {
         {`
           .controls-wrapper{
             position: absolute;
-            bottom: -45px;
+            bottom: 5px;
             left: 0;
             opacity: ${showControls || !isPlay ? '1' : '0'};
             width: 100%;
-            height: 40px;
+            height: 55px;
             background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.37),rgba(0,0,0,.57),rgba(0,0,0,.75));
             transition: all .5s linear;
           }

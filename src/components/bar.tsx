@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { useContext, useRef } from 'react'
+import { useContext, useRef, useState, useEffect } from 'react'
 import { GlobalStoreContext } from '../store/index'
 
+import getMouseXY from '../Utils/getMouseXY'
 interface IParams {
   type: string,
   payload: any
@@ -9,55 +10,93 @@ interface IParams {
 
 type IDispatch = (params: IParams) => void
 
-const dragBar = (e: React.MouseEvent, out: HTMLDivElement | null, drag: boolean | undefined, duration: number, dispatch: IDispatch) => {
-  const event: any = e || window.event;
-  const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
-  const x = event.pageX || event.clientX + scrollX;
-  if (out !== null) {
-    const position = out.getBoundingClientRect()
-    const width = position.width
-    const left = x - position.left
-    const currentTime = duration * (left / width)
-    if (drag !== undefined) {
-      dispatch({
-        type: 'drag',
-        payload: !drag
-      })
-    }
+
+
+const progressClick = (e: React.MouseEvent, out: HTMLDivElement | null, drag: boolean | undefined, duration: number, dispatch: IDispatch) => {
+  const currentTime = duration * getMouseXY(e, out)
+  if (drag !== undefined) {
     dispatch({
-      type: 'currentTime',
-      payload: currentTime
+      type: 'drag',
+      payload: !drag
     })
   }
+  dispatch({
+    type: 'currentTime',
+    payload: currentTime
+  })
 }
+
+const dragBar = (e: any, out: HTMLDivElement | null, draging: boolean, drag: boolean, duration: number, dispatch: IDispatch) => {
+  let flag: boolean = true
+  if (draging) {
+    const currentTime = duration * getMouseXY(e, out)
+    if (flag) {
+      flag = false
+      setTimeout(() => {
+        if (drag !== undefined) {
+          dispatch({
+            type: 'drag',
+            payload: !drag
+          })
+        }
+        dispatch({
+          type: 'currentTime',
+          payload: currentTime
+        })
+      }, 100)
+    }
+  }
+}
+
+let draging = false
 
 export default function Bar() {
   const { state, dispatch } = useContext(GlobalStoreContext);
   const out = useRef<HTMLDivElement>(null)
   const { duration, drag, currentTime } = state
+  useEffect(() => {
+    document.addEventListener('mousemove', (e) => dragBar(e, out.current, draging, drag, duration, dispatch), false)
+    document.addEventListener('mouseup', () => draging = false, false)
+  }, [draging])
   if (!duration) return null
   return (
     <div className="progress-bar-out" ref={out}
-      onClick={(e) => dragBar(e, out.current, drag, duration, dispatch)}
+      onClick={(e) => progressClick(e, out.current, drag, duration, dispatch)}
       onTouchStart={() => dispatch({ type: 'showControls', payload: true })}
+      onMouseMove={(e) => dragBar(e, out.current, draging, drag, duration, dispatch)}
     >
       <div className="progress-bar-in" />
+      <div className="progress-bar-ball"
+        onMouseDown={() => draging = true}
+      ></div>
       <style jsx>
         {`
           .progress-bar-out{
             width: 100%;
-            height: 10px;
+            height: 8px;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-item: flex-start;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 15px;
+            background-color: rgba(255,255,255,.4);
           }
           .progress-bar-in{
             width: ${currentTime && duration && currentTime * 100 / duration || 0}%;
-            height: 3px;
+            height: 100%;
             border-radius: 2px;
             background-image: linear-gradient(-90deg,#fa1f41,#e31106);
-            transition: all .2s linear;
+          }
+          .progress-bar-ball{
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ffffff;
+          }
+          .progress-bar-ball:hover{
+            cursor: pointer;
+            width: 12px;
+            height: 12px;
           }
           .progress-bar-out:hover{
             cursor: pointer;
