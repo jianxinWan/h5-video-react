@@ -27,7 +27,6 @@ const progressClick = (e: React.MouseEvent, out: HTMLDivElement | null, drag: bo
 
 const dragBar = (e: any, out: HTMLDivElement | null, draging: boolean, drag: boolean, duration: number, dispatch: IDispatch) => {
   let flag: boolean = true
-  console.log(draging, '222')
   if (draging) {
     const currentTime = duration * getMouseXY(e, out)
     if (flag && currentTime) {
