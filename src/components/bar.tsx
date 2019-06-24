@@ -3,14 +3,13 @@ import { useContext, useRef, useState, useEffect } from 'react'
 import { GlobalStoreContext } from '../store/index'
 
 import getMouseXY from '../Utils/getMouseXY'
+import isPc from '../Utils/isPc'
 interface IParams {
   type: string,
   payload: any
 }
 
 type IDispatch = (params: IParams) => void
-
-
 
 const progressClick = (e: React.MouseEvent, out: HTMLDivElement | null, drag: boolean | undefined, duration: number, dispatch: IDispatch) => {
   const currentTime = duration * getMouseXY(e, out)
@@ -28,11 +27,12 @@ const progressClick = (e: React.MouseEvent, out: HTMLDivElement | null, drag: bo
 
 const dragBar = (e: any, out: HTMLDivElement | null, draging: boolean, drag: boolean, duration: number, dispatch: IDispatch) => {
   let flag: boolean = true
+  console.log(draging, '222')
   if (draging) {
     const currentTime = duration * getMouseXY(e, out)
-    if (flag) {
+    if (flag && currentTime) {
       flag = false
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         if (drag !== undefined) {
           dispatch({
             type: 'drag',
@@ -43,20 +43,27 @@ const dragBar = (e: any, out: HTMLDivElement | null, draging: boolean, drag: boo
           type: 'currentTime',
           payload: currentTime
         })
-      }, 100)
+      })
     }
   }
 }
-
+//是否正在拖动
 let draging = false
+// isPc
+const pc = isPc()
 
 export default function Bar() {
   const { state, dispatch } = useContext(GlobalStoreContext);
   const out = useRef<HTMLDivElement>(null)
   const { duration, drag, currentTime } = state
   useEffect(() => {
-    document.addEventListener('mousemove', (e) => dragBar(e, out.current, draging, drag, duration, dispatch), false)
-    document.addEventListener('mouseup', () => draging = false, false)
+    if (pc) {
+      document.addEventListener('mousemove', (e) => dragBar(e, out.current, draging, drag, duration, dispatch), false)
+      document.addEventListener('mouseup', () => draging = false, false)
+    } else {
+      document.addEventListener('touchmove', (e) => dragBar(e, out.current, draging, drag, duration, dispatch), false)
+      document.addEventListener('touchend', () => draging = false, false)
+    }
   }, [draging])
   if (!duration) return null
   return (
@@ -68,6 +75,7 @@ export default function Bar() {
       <div className="progress-bar-in" />
       <div className="progress-bar-ball"
         onMouseDown={() => draging = true}
+        onTouchStart={() => draging = true}
       ></div>
       <style jsx>
         {`

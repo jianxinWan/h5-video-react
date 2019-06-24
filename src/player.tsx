@@ -13,18 +13,13 @@ interface IParams {
 
 type IDispatch = (params: IParams) => void
 
-let flag: boolean = true //函数节流
 const mouseMoveShowControl = (dispatch: IDispatch) => {
-  if (flag) {
-    flag = false
-    setTimeout(() => {
-      flag = true
-      dispatch({
-        type: 'showControls',
-        payload: true
-      })
-    }, 1000)
-  }
+  requestAnimationFrame(() => {
+    dispatch({
+      type: 'showControls',
+      payload: true
+    })
+  })
 }
 
 export default function Player(info: Iinfo) {
@@ -61,6 +56,7 @@ export default function Player(info: Iinfo) {
         onMouseEnter={() => dispatch({ type: 'showControls', payload: true })}
         onMouseMove={() => mouseMoveShowControl(dispatch)}
         onTouchStart={() => dispatch({ type: 'showControls', payload: true })}
+        onTouchMove={() => mouseMoveShowControl(dispatch)}
         onCanPlay={(e) => dispatch({ type: 'duration', payload: e.currentTarget.duration })}
         onPause={() => dispatch({ type: 'playStatus', payload: false })}
         onPlay={() => dispatch({ type: 'playStatus', payload: true })}

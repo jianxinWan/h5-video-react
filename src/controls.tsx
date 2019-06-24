@@ -23,13 +23,22 @@ const playBtnClick = (isPlay: boolean | undefined, dispatch: IDispatch) => {
     })
   }
 }
+
+const mouseMoveShowControl = (dispatch: IDispatch) => {
+  requestAnimationFrame(() => {
+    dispatch({
+      type: 'showControls',
+      payload: true
+    })
+  })
+}
+
 let showControlsFlag = true
 
 export default function Controls() {
   const { state, dispatch } = useContext(GlobalStoreContext)
   const { isPlay, showControls } = state
   useEffect(() => {
-    console.log(showControls)
     if (showControlsFlag) {
       if (isPlay) {
         showControlsFlag = false
@@ -39,12 +48,15 @@ export default function Controls() {
             type: 'showControls',
             payload: false
           })
-        }, 2500)
+        }, 3500)
       }
     }
   }, [showControls, isPlay])
   return (
-    <div className="controls-wrapper" onMouseMove={() => { }}>
+    <div className="controls-wrapper"
+      onMouseMove={() => mouseMoveShowControl(dispatch)}
+      onTouchMove={() => mouseMoveShowControl(dispatch)}
+    >
       <Bar />
       <div className="bottom-wrapper">
         <i
