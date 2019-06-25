@@ -85,7 +85,7 @@ export default function Bar() {
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
-            margin-top: 15px;
+            margin-top: 3px;
             background-color: rgba(255,255,255,.4);
           }
           .progress-bar-in{

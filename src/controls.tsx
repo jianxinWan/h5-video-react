@@ -33,11 +33,25 @@ const mouseMoveShowControl = (dispatch: IDispatch) => {
   })
 }
 
+const setMuted = (muted: boolean, dispatch: IDispatch) => {
+  dispatch({
+    type: 'muted',
+    payload: !muted
+  })
+}
+
+const setFullScreen = (dispatch: IDispatch) => {
+  dispatch({
+    type: 'isFullScreen',
+    payload: true
+  })
+}
+
 let showControlsFlag = true
 
 export default function Controls() {
   const { state, dispatch } = useContext(GlobalStoreContext)
-  const { isPlay, showControls } = state
+  const { isPlay, showControls, muted } = state
   useEffect(() => {
     if (showControlsFlag) {
       if (isPlay) {
@@ -59,15 +73,26 @@ export default function Controls() {
     >
       <Bar />
       <div className="bottom-wrapper">
-        <i
-          onClick={() => playBtnClick(isPlay, dispatch)}
-          className={[
-            'iconfont',
-            'play-btn',
-            isPlay ? 'icon-pause' : 'icon-play'].join(' ')
-          }>
-        </i>
-        <Time />
+        <div className="left">
+          <div className="play-btn-wrapper" onClick={() => playBtnClick(isPlay, dispatch)}>
+            <i
+              className={[
+                'iconfont',
+                'play-btn',
+                isPlay ? 'icon-pause' : 'icon-play'].join(' ')
+              }>
+            </i>
+          </div>
+          <Time />
+        </div>
+        <div className="right">
+          <div className="volume-wrapper" onClick={() => setMuted(muted, dispatch)}>
+            <i className={['iconfont', muted ? 'icon-jingyin' : 'icon-md-volume-high'].join(' ')}></i>
+          </div>
+          <div className="fullscreen-wrapper" onClick={() => setFullScreen(dispatch)}>
+            <i className="iconfont icon-quanping"></i>
+          </div>
+        </div>
       </div>
       <style jsx>
         {`
@@ -77,9 +102,10 @@ export default function Controls() {
             left: 0;
             opacity: ${showControls || !isPlay ? '1' : '0'};
             width: 100%;
-            height: 55px;
-            background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.37),rgba(0,0,0,.57),rgba(0,0,0,.75));
+            height: 45px;
+            background-color: rgba(43,51,63,.7);
             transition: all .5s linear;
+            color: #ffffff;
           }
           .bottom-wrapper{
             display: flex;
@@ -98,11 +124,35 @@ export default function Controls() {
           .play-btn{
             color: #ffffff;
           }
+          .play-btn-wrapper{
+            width: 30px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
           .icon-pause{
             font-size: 20px;
           }
+          .icon-play{
+            margin-top: 3px;
+          }
+          .left,.right{
+            display: flex;
+            justify-content: flex-start;
+          }
+          .volume-wrapper{
+            margin-right: 20px;
+          }
+          .volume-wrapper i{
+            font-size: 22px;
+          }
+          .volume-wrapper,.fullscreen-wrapper{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
         `}
-
       </style>
     </div>
   )

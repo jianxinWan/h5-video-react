@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { createContext, useReducer } from 'react'
 
-type IAction = ISetPlay | ISetDuration | ISetCurrentTime | ISetDrag | ISetShowControls
+type IAction = ISetPlay | ISetDuration | ISetCurrentTime | ISetDrag | ISetShowControls | ISetMuted | ISetIsFullScreen
 
 interface ISetPlay {
   type: string
@@ -30,13 +30,24 @@ interface ISetShowControls {
   type: string
   payload: IStore['showControls']
 }
+interface ISetMuted {
+  type: string
+  payload: IStore['muted']
+}
+
+interface ISetIsFullScreen {
+  type: string
+  payload: IStore['isFullScreen']
+}
 interface IStore {
   isPlay: boolean
   duration: number
   currentTime: number,
   drag: boolean,
   showPoster: boolean,
-  showControls: boolean
+  showControls: boolean,
+  muted: boolean,
+  isFullScreen: boolean
 }
 
 interface StoreContext {
@@ -47,6 +58,9 @@ interface StoreContext {
   dispatch(param: ISetDrag): void
   dispatch(param: ISetShowPoster): void
   dispatch(param: ISetShowControls): void
+  dispatch(param: ISetMuted): void
+  dispatch(param: ISetIsFullScreen): void
+
 }
 
 export function playerReducer(draft: IStore, action: IAction): any {
@@ -56,7 +70,7 @@ export function playerReducer(draft: IStore, action: IAction): any {
       return { ...draft, isPlay: payload }
     }
     case 'isFullScreen': {
-      return;
+      return { ...draft, isFullScreen: payload }
     }
     case 'duration': {
       return { ...draft, duration: payload }
@@ -73,6 +87,9 @@ export function playerReducer(draft: IStore, action: IAction): any {
     case 'showControls': {
       return { ...draft, showControls: payload }
     }
+    case 'muted': {
+      return { ...draft, muted: payload }
+    }
     default:
       return;
   }
@@ -84,7 +101,9 @@ const initialState: IStore = {
   currentTime: 0,
   drag: false,
   showPoster: true,
-  showControls: true
+  showControls: true,
+  muted: false,
+  isFullScreen: false
 }
 
 export const GlobalStoreContext = createContext<StoreContext>({

@@ -27,6 +27,7 @@ export default function Time() {
         {`
           .time-wrapper{
             color: #ffffff;
+            margin-left: 5px;
           }
           span{
             margin: 0 3px;

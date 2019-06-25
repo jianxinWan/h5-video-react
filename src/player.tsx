@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useContext, useEffect, Fragment, useRef } from 'react'
 import { GlobalStoreContext } from './store/index'
+import fullScreen from './Utils/fullscreen'
 interface Iinfo {
   src?: string
   autoPlay?: boolean
@@ -26,7 +27,7 @@ export default function Player(info: Iinfo) {
   const { src, autoPlay } = info
   const videoEl = useRef<HTMLVideoElement>(null)
   const { state, dispatch } = useContext(GlobalStoreContext)
-  const { isPlay, currentTime, drag } = state
+  const { isPlay, currentTime, drag, muted, isFullScreen } = state
   useEffect(() => {
     const video = videoEl.current
     if (video !== null) {
@@ -47,12 +48,23 @@ export default function Player(info: Iinfo) {
       }
     }
   }, [drag])
+  // 设置全屏
+  useEffect(() => {
+    const video = videoEl.current
+    if (video !== null) {
+      const canFullScreen = fullScreen(video)
+      console.log(canFullScreen)
+      if (canFullScreen && isFullScreen) {
+        video[canFullScreen]()
+      }
+    }
+  }, [isFullScreen])
   return (
     <Fragment>
       <video
         autoPlay={autoPlay}
         ref={videoEl}
-        muted
+        muted={muted}
         onMouseEnter={() => dispatch({ type: 'showControls', payload: true })}
         onMouseMove={() => mouseMoveShowControl(dispatch)}
         onTouchStart={() => dispatch({ type: 'showControls', payload: true })}
