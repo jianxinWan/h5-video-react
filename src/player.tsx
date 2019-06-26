@@ -53,8 +53,7 @@ export default function Player(info: Iinfo) {
     const video = videoEl.current
     if (video !== null) {
       const canFullScreen = fullScreen(video)
-      console.log(canFullScreen)
-      if (canFullScreen && isFullScreen) {
+      if (canFullScreen) {
         video[canFullScreen]()
       }
     }

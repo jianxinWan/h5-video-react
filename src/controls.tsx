@@ -40,10 +40,10 @@ const setMuted = (muted: boolean, dispatch: IDispatch) => {
   })
 }
 
-const setFullScreen = (dispatch: IDispatch) => {
+const setFullScreen = (isFullScreen: boolean, dispatch: IDispatch) => {
   dispatch({
     type: 'isFullScreen',
-    payload: true
+    payload: !isFullScreen
   })
 }
 
@@ -51,7 +51,7 @@ let showControlsFlag = true
 
 export default function Controls() {
   const { state, dispatch } = useContext(GlobalStoreContext)
-  const { isPlay, showControls, muted } = state
+  const { isPlay, showControls, muted, isFullScreen } = state
   useEffect(() => {
     if (showControlsFlag) {
       if (isPlay) {
@@ -89,7 +89,7 @@ export default function Controls() {
           <div className="volume-wrapper" onClick={() => setMuted(muted, dispatch)}>
             <i className={['iconfont', muted ? 'icon-jingyin' : 'icon-md-volume-high'].join(' ')}></i>
           </div>
-          <div className="fullscreen-wrapper" onClick={() => setFullScreen(dispatch)}>
+          <div className="fullscreen-wrapper" onClick={() => setFullScreen(isFullScreen, dispatch)}>
             <i className="iconfont icon-quanping"></i>
           </div>
         </div>
