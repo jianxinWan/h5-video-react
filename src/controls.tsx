@@ -4,6 +4,7 @@ import { GlobalStoreContext } from './store/index'
 
 import Bar from './components/bar'
 import Time from './components/time'
+import Volume from './components/volume'
 interface IParams {
   type: string,
   payload: boolean
@@ -88,6 +89,7 @@ export default function Controls() {
         <div className="right">
           <div className="volume-wrapper" onClick={() => setMuted(muted, dispatch)}>
             <i className={['iconfont', muted ? 'icon-jingyin' : 'icon-md-volume-high'].join(' ')}></i>
+            <Volume />
           </div>
           <div className="fullscreen-wrapper" onClick={() => setFullScreen(isFullScreen, dispatch)}>
             <i className="iconfont icon-quanping"></i>
@@ -143,6 +145,9 @@ export default function Controls() {
           }
           .volume-wrapper{
             margin-right: 20px;
+          }
+          .fullscreen-wrapper{
+            margin-right: 10px;
           }
           .volume-wrapper i{
             font-size: 22px;

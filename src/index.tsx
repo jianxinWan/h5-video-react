@@ -17,7 +17,7 @@ const Video = (info: IInfo) => {
   return (
     <GlobalStoreProvider>
       <div className="video-wrapper">
-        {poster && <Poster poster={poster} />}
+        {/* {poster && <Poster poster={poster} />} */}
         <Player src={src} autoPlay={autoPlay} />
         <PlayBtn />
         <Controls />
