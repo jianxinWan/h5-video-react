@@ -11,8 +11,13 @@ interface IParams {
   type: string
   payload: boolean
 }
+interface IInitParams {
+  type: string
+  payload: number
+}
 
 type IDispatch = (params: IParams) => void
+type IInitDispatch = (params: IInitParams) => void
 
 const mouseMoveShowControl = (dispatch: IDispatch) => {
   requestAnimationFrame(() => {
@@ -23,11 +28,15 @@ const mouseMoveShowControl = (dispatch: IDispatch) => {
   })
 }
 
+const initVideoParams = (e: any, dispatch: IInitDispatch) => {
+  dispatch({ type: 'duration', payload: e.currentTarget.duration })
+}
+
 export default function Player(info: Iinfo) {
   const { src, autoPlay } = info
   const videoEl = useRef<HTMLVideoElement>(null)
   const { state, dispatch } = useContext(GlobalStoreContext)
-  const { isPlay, currentTime, drag, muted, isFullScreen } = state
+  const { isPlay, currentTime, drag, muted, isFullScreen, volume } = state
   useEffect(() => {
     const video = videoEl.current
     if (video !== null) {
@@ -58,6 +67,14 @@ export default function Player(info: Iinfo) {
       }
     }
   }, [isFullScreen])
+  useEffect(() => {
+    const video = videoEl.current
+    if (video !== null) {
+      if (volume >= 0 && volume <= 1) {
+        video.volume = volume
+      }
+    }
+  }, [volume])
   return (
     <Fragment>
       <video
@@ -68,7 +85,7 @@ export default function Player(info: Iinfo) {
         onMouseMove={() => mouseMoveShowControl(dispatch)}
         onTouchStart={() => dispatch({ type: 'showControls', payload: true })}
         onTouchMove={() => mouseMoveShowControl(dispatch)}
-        onCanPlay={(e) => dispatch({ type: 'duration', payload: e.currentTarget.duration })}
+        onCanPlay={(e) => initVideoParams(e, dispatch)}
         onPause={() => dispatch({ type: 'playStatus', payload: false })}
         onPlay={() => dispatch({ type: 'playStatus', payload: true })}
         onTimeUpdate={(e) => dispatch({ type: 'currentTime', payload: e.currentTarget.currentTime })}

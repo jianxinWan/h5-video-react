@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { createContext, useReducer } from 'react'
+import Volume from 'src/components/volume';
 
-type IAction = ISetPlay | ISetDuration | ISetCurrentTime | ISetDrag | ISetShowControls | ISetMuted | ISetIsFullScreen | ISetShowVolume
+type IAction = ISetPlay | ISetDuration | ISetCurrentTime |
+  ISetDrag | ISetShowControls | ISetMuted | ISetIsFullScreen | ISetShowVolume | ISetVolume
 
 interface ISetPlay {
   type: string
@@ -43,6 +45,10 @@ interface ISetShowVolume {
   type: string
   payload: IStore['showVolume']
 }
+interface ISetVolume {
+  type: string
+  payload: IStore['volume']
+}
 interface IStore {
   isPlay: boolean
   duration: number
@@ -52,7 +58,8 @@ interface IStore {
   showControls: boolean
   muted: boolean
   isFullScreen: boolean
-  showVolume: boolean
+  showVolume: boolean,
+  volume: number
 }
 
 interface StoreContext {
@@ -66,6 +73,7 @@ interface StoreContext {
   dispatch(param: ISetMuted): void
   dispatch(param: ISetIsFullScreen): void
   dispatch(param: ISetShowVolume): void
+  dispatch(param: ISetVolume): void
 }
 
 export function playerReducer(draft: IStore, action: IAction): any {
@@ -98,6 +106,9 @@ export function playerReducer(draft: IStore, action: IAction): any {
     case 'showVolume': {
       return { ...draft, showVolume: payload }
     }
+    case 'volume': {
+      return { ...draft, volume: payload }
+    }
     default:
       return;
   }
@@ -112,7 +123,8 @@ const initialState: IStore = {
   showControls: true,
   muted: false,
   isFullScreen: false,
-  showVolume: false
+  showVolume: false,
+  volume: 0.6
 }
 
 export const GlobalStoreContext = createContext<StoreContext>({

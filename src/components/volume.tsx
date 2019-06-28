@@ -11,72 +11,63 @@ interface IParams {
 
 type IDispatch = (params: IParams) => void
 
-const progressClick = (e: React.MouseEvent, out: HTMLDivElement | null, drag: boolean | undefined, duration: number, dispatch: IDispatch) => {
-  const currentTime = duration * getMouseXY(e, out)
-  if (drag !== undefined) {
-    dispatch({
-      type: 'drag',
-      payload: !drag
-    })
-  }
-  dispatch({
-    type: 'currentTime',
-    payload: currentTime
-  })
-}
-
-const dragBar = (e: any, out: HTMLDivElement | null, draging: boolean, drag: boolean, duration: number, dispatch: IDispatch) => {
-  let flag: boolean = true
-  if (draging) {
-    const currentTime = duration * getMouseXY(e, out)
-    if (flag && currentTime) {
-      flag = false
-      requestAnimationFrame(() => {
-        if (drag !== undefined) {
-          dispatch({
-            type: 'drag',
-            payload: !drag
-          })
-        }
-        dispatch({
-          type: 'currentTime',
-          payload: currentTime
-        })
-      })
-    }
-  }
-}
 //是否正在拖动
 let draging = false
 // isPc
 const pc = isPc()
 
+const progressClick = (e: React.MouseEvent, out: HTMLDivElement | null, dispatch: IDispatch) => {
+  const volume = parseFloat(getMouseXY(e, out).topPercent.toFixed(2))
+  dispatch({
+    type: 'volume',
+    payload: volume
+  })
+}
+
+const dragBar = (e: any, out: HTMLDivElement | null, draging: boolean, dispatch: IDispatch) => {
+  let flag: boolean = true
+  if (draging) {
+    const volume = parseFloat(getMouseXY(e, out).topPercent.toFixed(2))
+    if (flag && volume) {
+      flag = false
+      requestAnimationFrame(() => {
+        dispatch({
+          type: 'volume',
+          payload: volume
+        })
+      })
+    }
+  }
+}
+
 export default function Volume() {
   const { state, dispatch } = useContext(GlobalStoreContext);
   const out = useRef<HTMLDivElement>(null)
-  const { duration, drag, currentTime } = state
+  const { volume, showVolume } = state
   useEffect(() => {
     if (pc) {
-      document.addEventListener('mousemove', (e) => dragBar(e, out.current, draging, drag, duration, dispatch), false)
+      document.addEventListener('mousemove', (e) => dragBar(e, out.current, draging, dispatch), false)
       document.addEventListener('mouseup', () => draging = false, false)
     } else {
-      document.addEventListener('touchmove', (e) => dragBar(e, out.current, draging, drag, duration, dispatch), false)
+      document.addEventListener('touchmove', (e) => dragBar(e, out.current, draging, dispatch), false)
       document.addEventListener('touchend', () => draging = false, false)
     }
   }, [draging])
-  if (!duration) return null
+  if (!showVolume && draging === false) return null
   return (
-    <div className="volume-wrapper">
+    <div className="volume-wrapper" onMouseMove={() => {
+
+    }}>
       <div className="volume-bar-out" ref={out}
-        onClick={(e) => progressClick(e, out.current, drag, duration, dispatch)}
+        onClick={(e) => progressClick(e, out.current, dispatch)}
         onTouchStart={() => dispatch({ type: 'showControls', payload: true })}
-        onMouseMove={(e) => dragBar(e, out.current, draging, drag, duration, dispatch)}
+        onMouseMove={(e) => dragBar(e, out.current, draging, dispatch)}
       >
-        <div className="volume-bar-in" />
         <div className="volume-bar-ball"
           onMouseDown={() => draging = true}
           onTouchStart={() => draging = true}
         ></div>
+        <div className="volume-bar-in" />
       </div>
       <style jsx>
         {`
@@ -85,7 +76,30 @@ export default function Volume() {
             bottom: 50px;
             width: 30px;
             height: 90px;
-            background-color: rgba(43,51,63,.7);          
+            background-color: rgba(43,51,63,.7);
+            display: flex;
+            justify-content: center;
+          }
+          .volume-bar-out{
+            width: 5px;
+            height: 80px;
+            margin: 5px 0;
+            background-color: rgba(255,255,255,.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+          }
+          .volume-bar-in{
+            width: 100%;
+            height: ${volume * 100}%;
+            background-image: linear-gradient(-90deg, rgb(250, 31, 65), rgb(227, 17, 6));
+          }
+          .volume-bar-ball{
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ffffff;
           }
         `}
       </style>

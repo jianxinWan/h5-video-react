@@ -7,10 +7,13 @@ import Time from './components/time'
 import Volume from './components/volume'
 interface IParams {
   type: string,
-  payload: boolean
+  payload: boolean | number
 }
 
 type IDispatch = (params: IParams) => void
+
+let showControlsFlag = true
+let showVolumeFlag = true
 
 const playBtnClick = (isPlay: boolean | undefined, dispatch: IDispatch) => {
   if (isPlay !== undefined) {
@@ -39,6 +42,17 @@ const setMuted = (muted: boolean, dispatch: IDispatch) => {
     type: 'muted',
     payload: !muted
   })
+  if (!muted) {
+    dispatch({
+      type: 'volume',
+      payload: 0
+    })
+  } else {
+    dispatch({
+      type: 'volume',
+      payload: 0.6
+    })
+  }
 }
 
 const setFullScreen = (isFullScreen: boolean, dispatch: IDispatch) => {
@@ -48,11 +62,21 @@ const setFullScreen = (isFullScreen: boolean, dispatch: IDispatch) => {
   })
 }
 
-let showControlsFlag = true
+const volumeMouseLeave = (dispatch: IDispatch) => {
+  if (showVolumeFlag) {
+    showControlsFlag = false
+    setTimeout(() => {
+      dispatch({
+        type: 'showVolume', payload: false
+      })
+      showControlsFlag = true
+    }, 3000)
+  }
+}
 
 export default function Controls() {
   const { state, dispatch } = useContext(GlobalStoreContext)
-  const { isPlay, showControls, muted, isFullScreen } = state
+  const { isPlay, showControls, muted, isFullScreen, volume } = state
   useEffect(() => {
     if (showControlsFlag) {
       if (isPlay) {
@@ -87,8 +111,12 @@ export default function Controls() {
           <Time />
         </div>
         <div className="right">
-          <div className="volume-wrapper" onClick={() => setMuted(muted, dispatch)}>
-            <i className={['iconfont', muted ? 'icon-jingyin' : 'icon-md-volume-high'].join(' ')}></i>
+          <div className="volume-wrapper">
+            <i className={['iconfont', muted ? 'icon-jingyin' : 'icon-md-volume-high'].join(' ')}
+              onClick={() => setMuted(muted, dispatch)}
+              onMouseEnter={() => dispatch({ type: 'showVolume', payload: true })}
+              onMouseLeave={() => volumeMouseLeave(dispatch)}
+            ></i>
             <Volume />
           </div>
           <div className="fullscreen-wrapper" onClick={() => setFullScreen(isFullScreen, dispatch)}>
@@ -151,6 +179,9 @@ export default function Controls() {
           }
           .volume-wrapper i{
             font-size: 22px;
+          }
+          .volume-wrapper i:hover{
+            cursor: pointer;
           }
           .volume-wrapper,.fullscreen-wrapper{
             display: flex;

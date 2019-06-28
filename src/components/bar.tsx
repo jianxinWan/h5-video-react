@@ -12,7 +12,7 @@ interface IParams {
 type IDispatch = (params: IParams) => void
 
 const progressClick = (e: React.MouseEvent, out: HTMLDivElement | null, drag: boolean | undefined, duration: number, dispatch: IDispatch) => {
-  const currentTime = duration * getMouseXY(e, out)
+  const currentTime = duration * getMouseXY(e, out).leftPercent
   if (drag !== undefined) {
     dispatch({
       type: 'drag',
@@ -28,7 +28,7 @@ const progressClick = (e: React.MouseEvent, out: HTMLDivElement | null, drag: bo
 const dragBar = (e: any, out: HTMLDivElement | null, draging: boolean, drag: boolean, duration: number, dispatch: IDispatch) => {
   let flag: boolean = true
   if (draging) {
-    const currentTime = duration * getMouseXY(e, out)
+    const currentTime = duration * getMouseXY(e, out).leftPercent
     if (flag && currentTime) {
       flag = false
       requestAnimationFrame(() => {
