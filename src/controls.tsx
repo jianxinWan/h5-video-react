@@ -128,7 +128,7 @@ export default function Controls() {
         {`
           .controls-wrapper{
             position: absolute;
-            bottom: 5px;
+            bottom: 0;
             left: 0;
             opacity: ${showControls || !isPlay ? '1' : '0'};
             width: 100%;
@@ -136,6 +136,7 @@ export default function Controls() {
             background-color: rgba(43,51,63,.7);
             transition: all .5s linear;
             color: #ffffff;
+            z-index: 10;
           }
           .bottom-wrapper{
             display: flex;
