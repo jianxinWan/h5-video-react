@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useContext, useEffect, Fragment, useRef } from 'react'
 import { GlobalStoreContext } from './store/index'
 import fullScreen from './Utils/fullscreen'
-interface Iinfo {
+interface IInfo {
   src?: string
   autoPlay?: boolean
 }
@@ -32,7 +32,7 @@ const initVideoParams = (e: any, dispatch: IInitDispatch) => {
   dispatch({ type: 'duration', payload: e.currentTarget.duration })
 }
 
-export default function Player(info: Iinfo) {
+export default function Player(info: IInfo) {
   const { src, autoPlay } = info
   const videoEl = useRef<HTMLVideoElement>(null)
   const { state, dispatch } = useContext(GlobalStoreContext)
@@ -43,7 +43,7 @@ export default function Player(info: Iinfo) {
       if (isPlay) {
         video.play()
       } else {
-        //播放状态下   
+        //播放状态下
         video.pause()
       }
     }
@@ -90,6 +90,8 @@ export default function Player(info: Iinfo) {
         onPlay={() => dispatch({ type: 'playStatus', payload: true })}
         onTimeUpdate={(e) => dispatch({ type: 'currentTime', payload: e.currentTarget.currentTime })}
         onEnded={() => dispatch({ type: 'playStatus', payload: false })}
+        onPlaying={() => console.log('playing')}
+        onProgress={() => console.log('progress')}
       >
         <source src={src} type="video/mp4" />
       </video>
