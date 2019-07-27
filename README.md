@@ -26,4 +26,4 @@ h5-video-react
 │   webpack.config.js
 ```
 
-[在线演示](https://sun111sunshine.github.io/h5-video-react/)
+[在线演示](https://jianxinWan.github.io/h5-video-react/)
