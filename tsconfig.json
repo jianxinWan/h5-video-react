@@ -10,7 +10,7 @@
   },
   "include": [
     "src",
-    "examples"
+    "examples/src"
   ],
   "exclude": [
     "node_modules"
